@@ -1,0 +1,17 @@
+sudo: required
+services:
+    -docker
+before_install:
+    - docker build -t kdsofts/react-test -f ./client/Dockerfile.dev ./client
+script:
+    - docker run parthkd/react-test npm test -- --coverage
+after_success:
+    - docker build -t kdsofts/multi-client ./client
+    - docker build -t kdsofts/multi-nginx ./nginx
+    - docker build -t kdsofts/multi-server ./
+    - docker build -t kdsofts/multi-worker ./worker
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+    - docker push kdsofts/multi-client
+    - docker push kdsofts/multi-nginx
+    - docker push kdsofts/multi-server
+    - docker push kdsofts/multi-worker
