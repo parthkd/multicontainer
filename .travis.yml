@@ -1,25 +1,18 @@
 sudo: required
 services:
   - docker
-
-before_install:
-  - docker build -t stephengrider/react-test -f ./client/Dockerfile.dev ./client
-
-script:
-  - docker run stephengrider/react-test npm test -- --coverage
-
 after_success:
-  - docker build -t stephengrider/multi-client ./client
-  - docker build -t stephengrider/multi-nginx ./nginx
-  - docker build -t stephengrider/multi-server ./server
-  - docker build -t stephengrider/multi-worker ./worker
+  - docker build -t kdsofts/multi-client ./client
+  - docker build -t kdsofts/multi-nginx ./nginx
+  - docker build -t kdsofts/multi-server ./server
+  - docker build -t kdsofts/multi-worker ./worker
   # Log in to the docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # Take those images and push them to docker hub
-  - docker push stephengrider/multi-client
-  - docker push stephengrider/multi-nginx
-  - docker push stephengrider/multi-server
-  - docker push stephengrider/multi-worker
+  - docker push kdsofts/multi-client
+  - docker push kdsofts/multi-nginx
+  - docker push kdsofts/multi-server
+  - docker push kdsofts/multi-worker
 
 deploy:
   provider: elasticbeanstalk
