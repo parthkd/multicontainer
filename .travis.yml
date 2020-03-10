@@ -4,7 +4,7 @@ services:
 before_install:
     - docker build -t kdsofts/react-test -f ./client/Dockerfile.dev ./client
 script:
-    - docker run parthkd/react-test npm test -- --coverage
+    - docker run kdsofts/react-test npm test -- --coverage
 after_success:
     - docker build -t kdsofts/multi-client ./client
     - docker build -t kdsofts/multi-nginx ./nginx
